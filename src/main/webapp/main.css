@@ -1,0 +1,41 @@
+
+#popUpDialog-bg {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+}
+#popUpDialog {
+  position: fixed;
+  width: 350px;
+  left: 50%;
+  margin-left: -125px;
+  margin-top: 5%;
+  padding: 5px;
+  border-radius: 5px;
+  background: white;
+}
+#popUpDialogPizza-bg {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+}
+#popUpDialogPizza {
+  position: fixed;
+  width: 650px;
+  left: 30%;
+  margin-left: -125px;
+  margin-top: 5%;
+  padding: 5px;
+  border-radius: 5px;
+  background: white;
+}
+.buttons-container {
+  width: 80%;
+  margin: 0 auto;
+}

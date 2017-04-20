@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="by.pizzasp.ics.mybatis.HistoryMapper">
+
+    <resultMap id="historyDTO" type="by.pizzasp.ics.dto.HistoryDTO">
+        <id property="goodPizzaId" column="order_pizza_id"/>
+        <result property="namePizza" column="name"/>
+        <result property="pricePerPizza" column="price"/>
+        <result property="timeOrder" column="timeOrder"/>
+    </resultMap>
+
+
+    <insert id="addOrderHistory" useGeneratedKeys="true" >
+
+        INSERT INTO history(order_pizza_id, timeOrder)
+    SELECT good_pizza_id, NOW() FROM basket
+
+    </insert>
+
+    <select id="getHistory" parameterType="java.lang.Long" resultMap="historyDTO">
+      SELECT DISTINCT
+    hs.id,
+    hs.order_pizza_id,
+    gp.name,
+    pizz_price.price,
+    hs.timeOrder
+FROM
+    (history AS hs
+    INNER JOIN good_pizza AS gp ON gp.id = hs.order_pizza_id)
+        JOIN
+    (SELECT
+        history.id AS id,
+            history.order_pizza_id,
+            SUM(ingredients.price_per_kg * pizza_const.wage_ingredient) + basis_pizza.price_basis AS price
+    FROM
+        ingredients, pizza_const, basis_pizza, history
+    WHERE
+        ingredients.id = pizza_const.ingredients_id
+            AND basis_pizza.id = pizza_const.basis_pizza_id
+            AND pizza_const.good_pizza_id = history.order_pizza_id
+    GROUP BY history.id , history.order_pizza_id , basis_pizza.price_basis) AS pizz_price ON pizz_price.order_pizza_id = hs.order_pizza_id
+
+    </select>
+
+    <delete id="cleanBasket" parameterType="java.lang.Long">
+        DELETE FROM basket;
+    </delete>
+
+
+
+
+</mapper>

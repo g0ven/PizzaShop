@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="by.pizzasp.ics.mybatis.BasisPizzaMapper">
+
+    <resultMap id="basisPizzaDTO" type="by.pizzasp.ics.dto.BasisPizzaDTO">
+        <id property="id" column="id"/>
+        <result property="radius" column="radius"/>
+        <result property="wage" column="wage_basis"/>
+        <result property="price" column="price_basis"/>
+    </resultMap>
+
+
+    <insert id="addNewBasisPizza" parameterType="by.pizzasp.ics.dto.BasisPizzaDTO" useGeneratedKeys="true" keyProperty="id" keyColumn="id" >
+
+        INSERT INTO
+        basis_pizza(id, radius, wage_basis, price_basis)
+        VALUES(NULL,#{radius}, #{wage},#{price})
+
+        <selectKey keyProperty="id" resultType="java.lang.Long" order="AFTER">
+            SELECT LAST_INSERT_ID() AS id
+        </selectKey>
+
+    </insert>
+
+    <select id="getBasisPizza" parameterType="java.lang.Long" resultMap="basisPizzaDTO">
+        SELECT
+        bp.id,
+        bp.radius,
+        bp.wage_basis,
+        bp.price_basis
+        FROM
+        basis_pizza AS bp
+        WHERE
+        bp.id=#{id}
+    </select>
+
+    <select id="getAllBasisPizzas" resultMap="basisPizzaDTO">
+        SELECT
+        bp.id,
+        bp.radius,
+        bp.wage_basis,
+        bp.price_basis
+        FROM
+        basis_pizza AS bp
+    </select>
+
+    <update id="changePriceBasisPizza" parameterType="map">
+        UPDATE
+        basis_pizza AS bp
+        SET
+        bp.price_basis=#{1}
+        WHERE
+        bp.id=#{0}
+
+    </update>
+
+
+</mapper>

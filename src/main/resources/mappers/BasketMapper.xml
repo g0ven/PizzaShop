@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="by.pizzasp.ics.mybatis.BasketMapper">
+
+    <resultMap id="basketDTO" type="by.pizzasp.ics.dto.BasketDTO">
+        <id property="goodPizzaId" column="good_pizza_id"/>
+        <result property="namePizza" column="name"/>
+        <result property="pricePerPizza" column="price"/>
+    </resultMap>
+
+
+    <insert id="addPizzaIntoBasket" parameterType="java.lang.Long" useGeneratedKeys="true" keyProperty="goodPizzaId" keyColumn="id" >
+
+        INSERT INTO
+        basket(good_pizza_id)
+        VALUES(#{0})
+    </insert>
+
+    <select id="getBasket" parameterType="java.lang.Long" resultMap="basketDTO">
+      SELECT DISTINCT
+    pizz_price.id, bs.good_pizza_id, gp.name, pizz_price.price
+    FROM
+    (basket AS bs
+    INNER JOIN good_pizza AS gp ON gp.id = bs.good_pizza_id)
+        JOIN
+    (SELECT
+        basket.id AS id,
+            basket.good_pizza_id,
+            SUM(ingredients.price_per_kg * pizza_const.wage_ingredient) + basis_pizza.price_basis AS price
+    FROM
+        ingredients, pizza_const, basis_pizza, basket
+    WHERE
+        ingredients.id = pizza_const.ingredients_id
+            AND basis_pizza.id = pizza_const.basis_pizza_id
+            AND pizza_const.good_pizza_id = basket.good_pizza_id
+    GROUP BY basket.id , basket.good_pizza_id , basis_pizza.price_basis) AS pizz_price ON pizz_price.good_pizza_id = bs.good_pizza_id
+    </select>
+    <delete id="delPizzaFromBasket" parameterType="java.lang.Long">
+        DELETE FROM basket
+    WHERE
+    basket.good_pizza_id = #{0} LIMIT 1;
+    </delete>
+
+
+
+
+</mapper>

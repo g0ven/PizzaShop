@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="by.pizzasp.ics.mybatis.FinalPizzaMapper">
+
+    <resultMap id="finalPizzaDTO" type="by.pizzasp.ics.dto.FinalPizzaDTO">
+        <result property="goodPizzaId" column="good_pizza_id"/>
+        <result property="name" column="name"/>
+        <result property="basisPizzaId" column="basis_pizza_id"/>
+        <result property="radius" column="radius"/>
+        <result property="wage" column="wage"/>
+        <result property="price" column="price"/>
+        <collection property="ingredientsDTO" javaType="List" column="id" ofType="by.pizzasp.ics.dto.IngredientsDTO">
+            <result property="id" column="ingredient_id"/>
+            <result property="name" column="name_ingredient"/>
+            <result property="wage" column="wage_ingredient"/>
+        </collection>
+    </resultMap>
+
+
+
+
+    <insert id="addNewFinalPizza" parameterType="map" useGeneratedKeys="true" keyProperty="id" keyColumn="id" >
+
+        INSERT INTO
+        pizza_const(good_pizza_id, basis_pizza_id, ingredients_id, wage_ingredient)
+        VALUES
+
+        (#{0}, #{1},#{2.id},#{2.wage})
+
+
+    </insert>
+
+   <select id="getFinalPizza" parameterType="java.lang.Long" resultMap="finalPizzaDTO">
+        SELECT
+    pc.good_pizza_id,
+    gp.name,
+    bp.radius,
+    ingr.name_ingredient,
+    pc.wage_ingredient,
+    (SELECT
+            SUM(pizza_const.wage_ingredient) + basis_pizza.wage_basis
+        FROM
+            pizza_const,
+            basis_pizza
+        WHERE
+            basis_pizza.id = pizza_const.basis_pizza_id
+                AND pizza_const.good_pizza_id = #{0}
+        GROUP BY basis_pizza.wage_basis) AS wage,
+    (SELECT
+            SUM(ingredients.price_per_kg * pizza_const.wage_ingredient) + basis_pizza.price_basis
+        FROM
+            ingredients,
+            pizza_const,
+            basis_pizza
+        WHERE
+            ingredients.id = pizza_const.ingredients_id
+                AND basis_pizza.id = pizza_const.basis_pizza_id
+                AND pizza_const.good_pizza_id = #{0}
+        GROUP BY basis_pizza.price_basis) AS price
+FROM
+    ((pizza_const AS pc
+    INNER JOIN good_pizza AS gp ON gp.id = pc.good_pizza_id)
+    INNER JOIN basis_pizza AS bp ON bp.id = pc.basis_pizza_id)
+        INNER JOIN
+    ingredients AS ingr ON ingr.id = pc.ingredients_id
+WHERE
+    good_pizza_id = #{0}
+
+   </select>
+
+    <select id="getAllFinalPizzas" resultMap="finalPizzaDTO">
+SELECT
+    pc.good_pizza_id,
+    gp.name,
+    ingr.name_ingredient,
+    pizz_price.price
+FROM
+    (((pizza_const AS pc
+    INNER JOIN good_pizza AS gp ON gp.id = pc.good_pizza_id)
+    INNER JOIN basis_pizza AS bp ON bp.id = pc.basis_pizza_id)
+    INNER JOIN ingredients AS ingr ON ingr.id = pc.ingredients_id)
+        JOIN
+    (SELECT
+        good_pizza.id AS id,
+            SUM(ingredients.price_per_kg * pizza_const.wage_ingredient) + basis_pizza.price_basis AS price
+    FROM
+        ingredients, pizza_const, basis_pizza, good_pizza
+    WHERE
+        ingredients.id = pizza_const.ingredients_id
+            AND basis_pizza.id = pizza_const.basis_pizza_id
+            AND good_pizza.id = pizza_const.good_pizza_id
+    GROUP BY good_pizza.id , basis_pizza.price_basis) AS pizz_price ON pizz_price.id = pc.good_pizza_id
+
+    </select>
+
+
+</mapper>

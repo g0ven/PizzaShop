@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="by.pizzasp.ics.mybatis.IngredientsMapper">
+
+    <resultMap id="ingredientsDTO" type="by.pizzasp.ics.dto.IngredientsDTO">
+        <id property="id" column="id"/>
+        <result property="name" column="name_ingredient"/>
+        <result property="pricePerKg" column="price_per_kg"/>
+        <result property="wage" column="wage_ingredient"/>
+        </resultMap>
+
+
+    <insert id="addNewIngredient" parameterType="by.pizzasp.ics.dto.IngredientsDTO" useGeneratedKeys="true" keyProperty="id" keyColumn="id" >
+
+        INSERT INTO
+        ingredients(id, name_ingredient, price_per_kg)
+        VALUES(NULL,#{name}, #{pricePerKg})
+
+        <selectKey keyProperty="id" resultType="java.lang.Long" order="AFTER">
+            SELECT LAST_INSERT_ID() AS id
+        </selectKey>
+
+    </insert>
+
+    <select id="getIngredient" parameterType="java.lang.Long" resultMap="ingredientsDTO">
+        SELECT
+        ingr.id,
+        ingr.name_ingredient,
+        ingr.price_per_kg
+        FROM
+        ingredients AS ingr
+        WHERE
+        ingr.id=#{id}
+    </select>
+
+    <select id="getAllIngredients" resultMap="ingredientsDTO">
+        SELECT
+        ingr.id,
+        ingr.name_ingredient,
+        ingr.price_per_kg
+        FROM
+        ingredients AS ingr
+    </select>
+
+    <update id="changePricePerKg" parameterType="map">
+        UPDATE
+        ingredients AS ingr
+        SET
+        ingr.price_per_kg=#{1}
+        WHERE
+        ingr.id=#{0}
+
+    </update>
+
+
+</mapper>

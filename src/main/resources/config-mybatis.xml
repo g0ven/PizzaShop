@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+    <mappers>
+        <mapper resource="mappers/IngredientsMapper.xml"/>
+        <mapper resource="mappers/BasisPizzaMapper.xml"/>
+        <mapper resource="mappers/GoodPizzaMapper.xml"/>
+        <mapper resource="mappers/FinalPizzaMapper.xml"/>
+        <mapper resource="mappers/AccessDataMapper.xml"/>
+        <mapper resource="mappers/BasketMapper.xml"/>
+        <mapper resource="mappers/HistoryMapper.xml"/>
+    </mappers>
+</configuration>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="by.pizzasp.ics.mybatis.GoodPizzaMapper">
+
+    <resultMap id="goodPizzaDTO" type="by.pizzasp.ics.dto.GoodPizzaDTO">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="price" column="price"/>
+        <result property="procValue" column="proc_value"/>
+    </resultMap>
+
+
+    <insert id="addNewGoodPizza" parameterType="by.pizzasp.ics.dto.GoodPizzaDTO" useGeneratedKeys="true" keyProperty="id" keyColumn="id" >
+
+        INSERT INTO
+        good_pizza(id, name, price,proc_value)
+        VALUES(NULL,#{name}, 0, 100)
+
+        <selectKey keyProperty="id" resultType="java.lang.Long" order="AFTER">
+            SELECT LAST_INSERT_ID() AS id
+        </selectKey>
+
+    </insert>
+
+    <select id="getGoodPizza" parameterType="java.lang.Long" resultMap="goodPizzaDTO">
+        SELECT
+        gp.id,
+        gp.name,
+        gp.price,
+        gp.proc_value
+        FROM
+        good_pizza AS gp
+        WHERE
+        gp.id=#{id}
+    </select>
+
+    <select id="getAllGoodPizzas" resultMap="goodPizzaDTO">
+        SELECT
+        gp.id,
+        gp.name,
+        gp.price,
+        gp.proc_value
+        FROM
+        good_pizza AS gp
+    </select>
+
+
+</mapper>

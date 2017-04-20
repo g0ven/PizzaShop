@@ -1,0 +1,295 @@
+GET Получить все ингредиенты
+localhost:8080/api/v1.0/ingredients
+Ответ:
+[
+  {
+    "id": 1,
+    "name": "name_ingredient_1",
+    "pricePerKg": 1,
+    "wage": null
+  },
+  {
+    "id": 2,
+    "name": "name_ingredient_2",
+    "pricePerKg": 2,
+    "wage": null
+  },
+  {
+    "id": 3,
+    "name": "name_ingredient_3",
+    "pricePerKg": 3,
+    "wage": null
+  }
+]
+
+
+GET Получить ингредиент с id=1
+localhost:8080/api/v1.0/ingredients?id=1
+Ответ:
+{
+  "id": 1,
+  "name": "name_ingredient_1",
+  "pricePerKg": 1,
+  "wage": null
+}
+
+POST Записать новый ингредиент
+localhost:8080/api/v1.0/ingredients
+Запрос:
+{"name":"milk", "pricePerKg":"6"}
+
+
+PUT Изменить цену ингредиента
+localhost:8080/api/v1.0/ingredients?id=1&price=12
+
+
+GET Получить все основы для пиццы
+localhost:8080/api/v1.0/basisPizza
+Ответ:
+[
+  {
+    "id": 1,
+    "radius": 10,
+    "wage": 10,
+    "price": 10
+  },
+  {
+    "id": 2,
+    "radius": 12,
+    "wage": 12,
+    "price": 12
+  },
+  {
+    "id": 3,
+    "radius": 13,
+    "wage": 13,
+    "price": 13
+  }
+]
+
+GET Получить основу для пиццы с id=1
+localhost:8080/api/v1.0/basisPizza?id=1
+Ответ:
+{
+  "id": 1,
+  "radius": 10,
+  "wage": 10,
+  "price": 10
+}
+
+POST Записать новую основу для пиццы
+localhost:8080/api/v1.0/basisPizza
+Запрос:
+{"radius":17,"wage":19, "price":22}
+
+
+PUT Изменить цену за основу
+localhost:8080/api/v1.0/basisPizza?id=1&price=22
+
+GET Получить всем имена пицц(служебное использование)
+localhost:8080/api/v1.0/goodPizza
+Ответ:
+[
+  {
+    "id": 1,
+    "name": "name_pizza_1",
+    "price": 0,
+    "procValue": 100
+  },
+  {
+    "id": 2,
+    "name": "name_pizza_2",
+    "price": 0,
+    "procValue": 100
+  },
+  {
+    "id": 3,
+    "name": "name_pizza_3",
+    "price": 0,
+    "procValue": 100
+  }
+]
+
+
+GET Получить имя пиццы с id=1(служебное использование)
+localhost:8080/api/v1.0/goodPizza?id=1
+Ответ:
+{
+  "id": 1,
+  "name": "name_pizza_1",
+  "price": 0,
+  "procValue": 100
+}
+
+POST Добавить имя пиццы(служебное использование)
+localhost:8080/api/v1.0/goodPizza
+Запрос:
+{"name":"margarita"}
+
+GET Получить все пиццы
+localhost:8080/api/v1.0/finalPizza
+Ответ:
+[
+  {
+    "goodPizzaId": 1,
+    "name": "name_pizza_1",
+    "basisPizzaId": null,
+    "radius": null,
+    "ingredientsDTO": [
+      {
+        "id": null,
+        "name": "name_ingredient_1",
+        "pricePerKg": null,
+        "wage": null
+      }
+    ],
+    "wage": null,
+    "price": 11
+  },
+  {
+    "goodPizzaId": 2,
+    "name": "name_pizza_2",
+    "basisPizzaId": null,
+    "radius": null,
+    "ingredientsDTO": [
+      {
+        "id": null,
+        "name": "name_ingredient_1",
+        "pricePerKg": null,
+        "wage": null
+      },
+      {
+        "id": null,
+        "name": "name_ingredient_2",
+        "pricePerKg": null,
+        "wage": null
+      }
+    ],
+    "wage": null,
+    "price": 17
+  },
+  {
+    "goodPizzaId": 3,
+    "name": "name_pizza_3",
+    "basisPizzaId": null,
+    "radius": null,
+    "ingredientsDTO": [
+      {
+        "id": null,
+        "name": "name_ingredient_1",
+        "pricePerKg": null,
+        "wage": null
+      },
+      {
+        "id": null,
+        "name": "name_ingredient_2",
+        "pricePerKg": null,
+        "wage": null
+      },
+      {
+        "id": null,
+        "name": "name_ingredient_3",
+        "pricePerKg": null,
+        "wage": null
+      }
+    ],
+    "wage": null,
+    "price": 27
+  }
+]
+
+GET Получить пиццу с id=1
+localhost:8080/api/v1.0/finalPizza?id=1
+Ответ:
+{
+  "goodPizzaId": 1,
+  "name": "name_pizza_1",
+  "basisPizzaId": null,
+  "radius": 10,
+  "ingredientsDTO": [
+    {
+      "id": null,
+      "name": "name_ingredient_1",
+      "pricePerKg": null,
+      "wage": 1
+    }
+  ],
+  "wage": 11,
+  "price": 11
+}
+
+POST Добавить пиццу
+localhost:8080/api/v1.0/finalPizza
+Запрос:
+{
+  "name": "pizza1",
+  "basisPizzaId": 1,
+  "ingredientsDTO": [
+    {
+      "id": "3",
+      "wage": "7"
+    },
+    {
+      "id": 1,
+      "wage": 2
+    }
+  ]
+}
+
+GET Получить корзину
+localhost:8080/api/v1.0/basket
+Ответ:
+[
+  {
+    "goodPizzaId": 1,
+    "namePizza": "name_pizza_1",
+    "pricePerPizza": 11
+  },
+  {
+    "goodPizzaId": 2,
+    "namePizza": "name_pizza_2",
+    "pricePerPizza": 17
+  },
+  {
+    "goodPizzaId": 3,
+    "namePizza": "name_pizza_3",
+    "pricePerPizza": 27
+  }
+]
+
+POST Добавить пиццу в корзину(указывается id пиццы)
+localhost:8080/api/v1.0/basket
+Запрос:
+{
+    1
+}
+
+DELETE Удалить пиццу с id=1 из корзины
+localhost:8080/api/v1.0/basket?id=1
+
+GET Получить историю заказов
+localhost:8080/api/v1.0/history
+Ответ:
+[
+  {
+    "goodPizzaId": 1,
+    "namePizza": "name_pizza_1",
+    "pricePerPizza": 11,
+    "timeOrder": 1492688531000
+  },
+  {
+    "goodPizzaId": 2,
+    "namePizza": "name_pizza_2",
+    "pricePerPizza": 17,
+    "timeOrder": 1492688531000
+  },
+  {
+    "goodPizzaId": 3,
+    "namePizza": "name_pizza_3",
+    "pricePerPizza": 27,
+    "timeOrder": 1492688532000
+  }
+]
+
+POST Заказать пиццы в корзине(пиццы помещаются в историю, корзина очищается)
+localhost:8080/api/v1.0/history
