@@ -35,11 +35,12 @@ public class FinalPizzaServiceImpl implements FinalPizzaService{
         goodPizzaDTO.setName(finalPizzaDTO.getName());
         goodPizzaService.addNewGoodPizza(goodPizzaDTO);
         Long goodPizzaId=goodPizzaDTO.getId();
+        if (!accessDataMapper.isExistBasisPizza(finalPizzaDTO.getBasisPizzaId())) {
+            throw new AccessDataError("ingredient with this id= " + finalPizzaDTO.getBasisPizzaId() + " not exist");
+        }
         for (IngredientsDTO newIngr: finalPizzaDTO.getIngredientsDTO()) {
             if(!accessDataMapper.isExistIngredient(newIngr.getId()))
                 throw new AccessDataError("ingredient with this id= "+newIngr.getId()+" not exist");
-            if(!accessDataMapper.isExistBasisPizza(finalPizzaDTO.getBasisPizzaId()))
-                throw new AccessDataError("ingredient with this id= "+ finalPizzaDTO.getBasisPizzaId() +" not exist");
             finalPizzaMapper.addNewFinalPizza(goodPizzaId,finalPizzaDTO.getBasisPizzaId(),newIngr);
 
         }
